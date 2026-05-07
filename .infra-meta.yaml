@@ -1,0 +1,12 @@
+# Contrato verificable. El comando `infra validate` checa que los valores
+# en este archivo matcheen con apps/stagehand-client.yaml en el repo do-infra.
+# NO editar a mano — lo regenera `infra scaffold-app`.
+
+stack: node-frontend-vue
+role: frontend
+container:
+  port: 80
+  healthcheck:
+    path: /
+do_infra_repo: darkeng/do-infra
+managed_by: do-infra
