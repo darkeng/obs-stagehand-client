@@ -10,12 +10,15 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
-        // Split heavy deps into their own chunks so the vendor bundle can be
-        // cached across deploys — only the app chunk re-downloads on update.
-        manualChunks: {
-          vendor: ['vue', 'vue-router', 'pinia'],
-          socket: ['socket.io-client'],
-          axios: ['axios'],
+        // Function form: split node_modules into named chunks so the vendor
+        // bundle gets cached across deploys — only the app chunk re-downloads.
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return
+          if (id.includes('vue-router') || id.includes('/vue/') || id.includes('pinia')) {
+            return 'vendor'
+          }
+          if (id.includes('socket.io-client')) return 'socket'
+          if (id.includes('axios')) return 'axios'
         },
       },
     },
